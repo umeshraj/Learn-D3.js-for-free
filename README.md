@@ -1,1 +1,1 @@
-scrimba_learn_d3js_ for_free
+Practice [Learn D3.js for free](https://scrimba.com/g/gd3js)
