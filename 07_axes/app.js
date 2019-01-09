@@ -1,4 +1,4 @@
-const dataset = [80, 100, 56, 120, 180, 30, 40, 120, 160];
+const dataset = [10, 20, 30, 40, 50];
 
 const svgWidth = 500,
   svgHeight = 300,
@@ -12,18 +12,36 @@ const svg = d3
   .attr("height", svgHeight)
   .attr("width", svgWidth);
 
+const xScale = d3
+  .scaleLinear()
+  .domain([0, dataset.length])
+  .range([0, svgWidth]);
+
 const yScale = d3
   .scaleLinear()
   .domain([0, d3.max(dataset)])
-  .range([0, svgHeight]);
+  .range([svgHeight, 0]);
+
+const xAxis = d3.axisBottom().scale(xScale);
+const yAxis = d3.axisLeft().scale(yScale);
+svg
+  .append("g")
+  .attr("transform", "translate(50, 10)")
+  .call(yAxis);
+
+const xAxisTranslate = svgHeight - 20;
+svg
+  .append("g")
+  .attr("transform", `translate(50, ${xAxisTranslate})`)
+  .call(xAxis);
 
 const barChart = svg
   .selectAll("rect")
   .data(dataset)
   .enter()
   .append("rect")
-  .attr("y", d => svgHeight - d)
-  .attr("height", d => d)
+  .attr("y", d => yScale(d))
+  .attr("height", d => svgHeight - yScale(d))
   .attr("width", barWidth - barPadding)
   .attr("transform", function(d, i) {
     var translate = [barWidth * i, 0];
